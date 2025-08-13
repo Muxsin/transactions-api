@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/dev.Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./internal:/code/internal
+      - ./cmd:/code/cmd
+    depends_on:
+      - postgres
