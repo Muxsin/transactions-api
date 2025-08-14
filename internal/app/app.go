@@ -4,9 +4,11 @@ import (
 	"context"
 	"fmt"
 	"infotecs-transactions-api/internal/config"
+	"infotecs-transactions-api/internal/database"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"gorm.io/gorm"
 )
 
@@ -17,19 +19,35 @@ type app struct {
 	server *http.Server
 }
 
-func New(config *config.Config, db *gorm.DB) *app {
-	app := &app{
-		config: config,
-		db:     db,
+func New() (*app, error) {
+	if err := godotenv.Load(".env"); err != nil {
+		return nil, err
 	}
-	app.router = app.loadRoutes()
+
+	db, err := database.Connect()
+	if err != nil {
+		return nil, err
+	}
+
+	// region: loading routes
+	router := gin.Default()
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, "Done")
+	})
+	// endregion
+
+	app := &app{
+		config: config.New(),
+		db:     db,
+		router: router,
+	}
 
 	app.server = &http.Server{
 		Addr:    fmt.Sprintf(":%s", app.config.HTTPServerPort),
 		Handler: app.router,
 	}
 
-	return app
+	return app, nil
 }
 
 func (a *app) Shutdown(ctx context.Context) error {

@@ -3,28 +3,18 @@ package main
 import (
 	"context"
 	"infotecs-transactions-api/internal/app"
-	"infotecs-transactions-api/internal/config"
-	"infotecs-transactions-api/internal/database"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
-
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	if err := godotenv.Load(".env"); err != nil {
-		panic(err)
-	}
-
-	db, err := database.Connect()
+	myApp, err := app.New()
 	if err != nil {
 		panic(err)
 	}
-
-	myApp := app.New(config.New(), db)
 
 	stopCh := make(chan os.Signal, 1)
 	signal.Notify(stopCh, os.Interrupt, syscall.SIGTERM)
