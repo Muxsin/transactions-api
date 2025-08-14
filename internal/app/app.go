@@ -6,6 +6,7 @@ import (
 	"infotecs-transactions-api/internal/config"
 	"infotecs-transactions-api/internal/database"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -15,6 +16,7 @@ import (
 type app struct {
 	config *config.Config
 	router *gin.Engine
+	// Todo: remove from struct and move in to method New() when implements repository.
 	db     *gorm.DB
 	server *http.Server
 }
@@ -24,7 +26,13 @@ func New() (*app, error) {
 		return nil, err
 	}
 
-	db, err := database.Connect()
+	dbHost := os.Getenv("DB_HOST")
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
+	dbPort := os.Getenv("DB_PORT")
+
+	db, err := database.Connect(dbHost, dbUser, dbPassword, dbName, dbPort)
 	if err != nil {
 		return nil, err
 	}
