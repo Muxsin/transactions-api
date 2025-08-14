@@ -1,5 +1,5 @@
 package get_last
 
-func (uc *useCase) GetLast() string {
+func (uc *UseCase) GetLast() string {
 	return "Getting last..."
 }

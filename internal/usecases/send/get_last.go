@@ -1,5 +1,5 @@
 package send
 
-func (uc *useCase) Send() string {
+func (uc *UseCase) Send() string {
 	return "Sending..."
 }

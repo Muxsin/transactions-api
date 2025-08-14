@@ -1,8 +1,8 @@
 package get_balance
 
-type useCase struct {
+type UseCase struct {
 }
 
-func New() *useCase {
-	return &useCase{}
+func New() *UseCase {
+	return &UseCase{}
 }

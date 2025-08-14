@@ -1,8 +1,8 @@
 package get_last
 
-type useCase struct {
+type UseCase struct {
 }
 
-func New() *useCase {
-	return &useCase{}
+func New() *UseCase {
+	return &UseCase{}
 }
