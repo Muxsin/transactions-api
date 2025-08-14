@@ -5,6 +5,10 @@ import (
 	"fmt"
 	"infotecs-transactions-api/internal/config"
 	"infotecs-transactions-api/internal/database"
+	"infotecs-transactions-api/internal/handlers"
+	get_balance "infotecs-transactions-api/internal/usecases/get-balance"
+	get_last "infotecs-transactions-api/internal/usecases/get-last"
+	"infotecs-transactions-api/internal/usecases/send"
 	"net/http"
 	"os"
 
@@ -37,11 +41,21 @@ func New() (*app, error) {
 		return nil, err
 	}
 
+	// region: creating usecases
+	getBalanceUseCase := get_balance.New()
+	getLastUseCase := get_last.New()
+	sendUseCase := send.New()
+	// endregion
+
+	// region: creating handlers
+	handler := handlers.New(getBalanceUseCase, getLastUseCase, sendUseCase)
+	// endregion
+
 	// region: loading routes
 	router := gin.Default()
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, "Done")
-	})
+	router.GET("/api/wallet/:address/balance", handler.GetBalance)
+	router.GET("/api/transactions", handler.GetLast)
+	router.POST("/api/send", handler.Send)
 	// endregion
 
 	app := &app{

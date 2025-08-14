@@ -7,15 +7,15 @@ import (
 )
 
 type handler struct {
-	getBalanceUseCase get_balance.UseCase
-	getLastUseCase    get_last.UseCase
-	sendUseCase       send.UseCase
+	getBalanceUseCase *get_balance.UseCase
+	getLastUseCase    *get_last.UseCase
+	sendUseCase       *send.UseCase
 }
 
 func New(
-	getBalanceUseCase get_balance.UseCase,
-	getLastUseCase get_last.UseCase,
-	sendUseCase send.UseCase,
+	getBalanceUseCase *get_balance.UseCase,
+	getLastUseCase *get_last.UseCase,
+	sendUseCase *send.UseCase,
 ) *handler {
 	return &handler{
 		getBalanceUseCase: getBalanceUseCase,

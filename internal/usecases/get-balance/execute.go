@@ -1,5 +1,5 @@
 package get_balance
 
-func (uc *UseCase) GetBalance() string {
+func (uc *UseCase) Execute() string {
 	return "Getting balance..."
 }
