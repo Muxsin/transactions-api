@@ -6,6 +6,8 @@ import (
 	"infotecs-transactions-api/internal/config"
 	"infotecs-transactions-api/internal/database"
 	"infotecs-transactions-api/internal/handlers"
+	"infotecs-transactions-api/internal/services/transaction"
+	"infotecs-transactions-api/internal/services/wallet"
 	get_balance "infotecs-transactions-api/internal/usecases/get-balance"
 	get_last "infotecs-transactions-api/internal/usecases/get-last"
 	"infotecs-transactions-api/internal/usecases/send"
@@ -41,10 +43,15 @@ func New() (*app, error) {
 		return nil, err
 	}
 
+	// region: creating services
+	walletService := wallet.New()
+	transactionService := transaction.New()
+	// endregion
+
 	// region: creating usecases
-	getBalanceUseCase := get_balance.New()
-	getLastUseCase := get_last.New()
-	sendUseCase := send.New()
+	getBalanceUseCase := get_balance.New(walletService)
+	getLastUseCase := get_last.New(walletService)
+	sendUseCase := send.New(transactionService)
 	// endregion
 
 	// region: creating handlers

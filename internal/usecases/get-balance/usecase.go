@@ -1,8 +1,15 @@
 package get_balance
 
-type UseCase struct {
+type walletService interface {
+	GetBalance() string
 }
 
-func New() *UseCase {
-	return &UseCase{}
+type UseCase struct {
+	walletService walletService
+}
+
+func New(service walletService) *UseCase {
+	return &UseCase{
+		walletService: service,
+	}
 }

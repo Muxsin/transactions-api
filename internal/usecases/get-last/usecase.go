@@ -1,8 +1,15 @@
 package get_last
 
-type UseCase struct {
+type walletService interface {
+	GetLast() string
 }
 
-func New() *UseCase {
-	return &UseCase{}
+type UseCase struct {
+	walletService walletService
+}
+
+func New(service walletService) *UseCase {
+	return &UseCase{
+		walletService: service,
+	}
 }

@@ -1,8 +1,15 @@
 package send
 
-type UseCase struct {
+type transactionService interface {
+	Send() string
 }
 
-func New() *UseCase {
-	return &UseCase{}
+type UseCase struct {
+	transactionService transactionService
+}
+
+func New(service transactionService) *UseCase {
+	return &UseCase{
+		transactionService: service,
+	}
 }

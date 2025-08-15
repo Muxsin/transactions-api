@@ -1,5 +1,5 @@
 package send
 
 func (uc *UseCase) Execute() string {
-	return "Sending..."
+	return uc.transactionService.Send()
 }
