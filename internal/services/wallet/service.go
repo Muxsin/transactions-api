@@ -1,8 +1,15 @@
 package wallet
 
-type service struct {
+type walletRepository interface {
+	GetByAddress() string
 }
 
-func New() *service {
-	return &service{}
+type service struct {
+	walletRepository walletRepository
+}
+
+func New(repository walletRepository) *service {
+	return &service{
+		walletRepository: repository,
+	}
 }

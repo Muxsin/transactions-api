@@ -1,8 +1,16 @@
 package transaction
 
-type service struct {
+type transactionRepository interface {
+	GetLastByCount() string
+	Create() string
 }
 
-func New() *service {
-	return &service{}
+type service struct {
+	transactionRepository transactionRepository
+}
+
+func New(repository transactionRepository) *service {
+	return &service{
+		transactionRepository: repository,
+	}
 }
