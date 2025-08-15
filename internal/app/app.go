@@ -24,7 +24,6 @@ import (
 type app struct {
 	config *config.Config
 	router *gin.Engine
-	// Todo: remove from struct and move in to method New() when implements repository.
 	db     *gorm.DB
 	server *http.Server
 }
