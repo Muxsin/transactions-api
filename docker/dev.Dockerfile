@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 8080
 
-CMD go run cmd/transactions-api/main.go
+CMD go run cmd/migrate/main.go && go run cmd/transactions-api/main.go

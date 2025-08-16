@@ -1,5 +1,7 @@
 package wallet
 
-func (s *service) GetBalance() string {
-	return "Getting balance..."
+import "infotecs-transactions-api/internal/models"
+
+func (s *service) GetBalance(address string) (*models.Wallet, error) {
+	return s.walletRepository.GetByAddress(address)
 }

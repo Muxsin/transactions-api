@@ -1,7 +1,9 @@
 package wallet
 
+import "infotecs-transactions-api/internal/models"
+
 type walletRepository interface {
-	GetByAddress() string
+	GetByAddress(address string) (*models.Wallet, error)
 }
 
 type service struct {

@@ -1,7 +1,9 @@
 package get_balance
 
+import "infotecs-transactions-api/internal/models"
+
 type walletService interface {
-	GetBalance() string
+	GetBalance(address string) (*models.Wallet, error)
 }
 
 type UseCase struct {
