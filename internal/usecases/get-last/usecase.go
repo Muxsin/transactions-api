@@ -1,7 +1,9 @@
 package get_last
 
+import "infotecs-transactions-api/internal/models"
+
 type transactionService interface {
-	GetLast() string
+	GetLast(count int) ([]models.Transaction, error)
 }
 
 type UseCase struct {

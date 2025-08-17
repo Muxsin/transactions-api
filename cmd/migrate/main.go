@@ -44,7 +44,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := db.AutoMigrate(&models.Wallet{}); err != nil {
+	if err := db.AutoMigrate(&models.Wallet{}, &models.Transaction{}); err != nil {
 		panic(err)
 	}
 

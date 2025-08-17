@@ -1,5 +1,7 @@
 package transaction
 
-func (s service) GetLast() string {
-	return "Getting last..."
+import "infotecs-transactions-api/internal/models"
+
+func (s service) GetLast(count int) ([]models.Transaction, error) {
+	return s.transactionRepository.GetLastByCount(count)
 }

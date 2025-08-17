@@ -1,7 +1,9 @@
 package transaction
 
+import "infotecs-transactions-api/internal/models"
+
 type transactionRepository interface {
-	GetLastByCount() string
+	GetLastByCount(count int) ([]models.Transaction, error)
 	Create() string
 }
 
