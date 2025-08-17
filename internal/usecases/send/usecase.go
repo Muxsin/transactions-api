@@ -1,7 +1,9 @@
 package send
 
+import "infotecs-transactions-api/internal/models"
+
 type transactionService interface {
-	Send() string
+	Send(transaction *models.Transaction) string
 }
 
 type UseCase struct {

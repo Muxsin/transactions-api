@@ -3,25 +3,25 @@ package handlers
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
-type walletResponse struct {
-	Id        uint   `json:"id"`
-	Address   string `json:"address"`
-	Balance   string `json:"balance"`
-	CreatedAt string `json:"created_at"`
+type walletBalanceResponse struct {
+	Address string `json:"address"`
+	Balance string `json:"balance"`
 }
 
 func (h *handler) GetBalance(c *gin.Context) {
 	address := c.Param("address")
 
-	wallet, err := h.getBalanceUseCase.Execute(address)
+	balance, err := h.getBalanceUseCase.Execute(address)
 	if err != nil {
+		log.Println(err)
+
 		if errors.Is(gorm.ErrRecordNotFound, err) {
 			c.Status(http.StatusNotFound)
 			return
@@ -31,11 +31,9 @@ func (h *handler) GetBalance(c *gin.Context) {
 		return
 	}
 
-	response := walletResponse{
-		Id:        wallet.ID,
-		Address:   wallet.Address,
-		Balance:   fmt.Sprintf("%.2f", float64(wallet.Balance)/100),
-		CreatedAt: wallet.CreatedAt.Format(time.RFC3339),
+	response := walletBalanceResponse{
+		Address: address,
+		Balance: fmt.Sprintf("%.2f", float64(*balance)/100),
 	}
 
 	c.JSON(http.StatusOK, response)

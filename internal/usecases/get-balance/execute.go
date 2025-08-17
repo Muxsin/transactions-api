@@ -1,7 +1,5 @@
 package get_balance
 
-import "infotecs-transactions-api/internal/models"
-
-func (uc *UseCase) Execute(address string) (*models.Wallet, error) {
+func (uc *UseCase) Execute(address string) (*int64, error) {
 	return uc.walletService.GetBalance(address)
 }

@@ -1,9 +1,8 @@
 package wallet
 
-import "infotecs-transactions-api/internal/models"
-
 type walletRepository interface {
-	GetByAddress(address string) (*models.Wallet, error)
+	GetByAddress(address string) (*int64, error)
+	SetBalanceByAddress(address string, balance int64) error
 }
 
 type service struct {

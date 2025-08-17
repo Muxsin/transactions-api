@@ -1,5 +1,7 @@
 package send
 
-func (uc *UseCase) Execute() string {
-	return uc.transactionService.Send()
+import "infotecs-transactions-api/internal/models"
+
+func (uc *UseCase) Execute(transaction *models.Transaction) string {
+	return uc.transactionService.Send(transaction)
 }
