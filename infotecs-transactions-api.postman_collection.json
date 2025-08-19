@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "b0fa86f7-5ac6-415b-8918-747d7d67df17",
+		"name": "infotecs-transactions-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12593810"
+	},
+	"item": [
+		{
+			"name": "Send",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"from\": \"5d69820aa9572275b9482ad2a076b54c29eea38c4faa06605fcb3ac2ce3097d4\",\n    \"to\": \"8bc4001b14be9c5674034fe216905de9838082b74057395aa05f909c9e93ca77\",\n    \"amount\": \"5\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}:{{port}}/api/send",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"send"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBalance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}:{{port}}/api/wallet/{{address}}/balance",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"wallet",
+						"{{address}}",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetLast",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}:{{port}}/api/transactions?count=10",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "count",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "localhost"
+		},
+		{
+			"key": "port",
+			"value": "8080"
+		},
+		{
+			"key": "address",
+			"value": "e240d825d255af751f5f55af8d9671beabdf2236c0a3b4e2639b3e182d994c88e"
+		}
+	]
+}
