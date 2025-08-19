@@ -23,3 +23,6 @@ docker compose up --watch --remove-orphans --build
 
 ## Тестирование с помощью Postman
 Для тестирования API используйте готовые запросы из коллекции Postman.
+
+
+**Ссылка:** https://github.com/Muxsin/transactions-api/
