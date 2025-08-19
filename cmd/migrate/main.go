@@ -10,8 +10,12 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"gorm.io/gorm"
 )
+
+var migrations = map[string]any{
+	"wallet":      &models.Wallet{},
+	"transaction": &models.Transaction{},
+}
 
 func generateRandomAddress() (string, error) {
 	bytes := make([]byte, 32)
@@ -20,12 +24,6 @@ func generateRandomAddress() (string, error) {
 	}
 
 	return hex.EncodeToString(bytes), nil
-}
-
-func truncateWallets(db *gorm.DB) error {
-	log.Println("Truncating wallets and transactions table...")
-
-	return db.Exec("TRUNCATE TABLE wallets RESTART IDENTITY CASCADE").Exec("TRUNCATE TABLE transactions RESTART IDENTITY CASCADE").Error
 }
 
 func main() {
@@ -44,45 +42,44 @@ func main() {
 		panic(err)
 	}
 
-	if err := db.AutoMigrate(&models.Wallet{}, &models.Transaction{}); err != nil {
-		panic(err)
-	}
-
-	sqlDB, err := db.DB()
-	if err != nil {
-		log.Fatalf("failed to get underlying sql.DB: %v", err)
-	}
-
-	defer func() {
-		if err := sqlDB.Close(); err != nil {
-			log.Printf("error closing database connection: %v", err)
-		} else {
-			log.Println("Database connection closed successfully.")
-		}
-	}()
-
-	if err := truncateWallets(db); err != nil {
-		log.Fatalf("Failed to truncate wallets table: %v", err)
-	}
-
-	const numWallets = 10
-	for i := 0; i < numWallets; i++ {
-		address, err := generateRandomAddress()
-		if err != nil {
-			log.Fatalf("failed to generate address: %v", err)
+	for name, model := range migrations {
+		if db.Migrator().HasTable(model) {
+			log.Printf("Table '%s' already exists, skipping migration.", name)
+			continue
 		}
 
-		newWallet := models.Wallet{
-			Address: address,
-			Balance: 10000,
+		if err := db.AutoMigrate(model); err != nil {
+			log.Fatalf("Failed to migrate table '%s': %v", name, err)
 		}
 
-		if err := db.Create(&newWallet).Error; err != nil {
-			log.Println("can't create a wallet: ", newWallet)
+		// --- SEEDING LOGIC EXPLANATION ---
+		// If you manually delete all data from the 'wallets' table
+		// but the table itself still exists, this seeding code will NOT run again
+		if name == "wallet" {
+			log.Println("Seeding initial data...")
+
+			const numWallets = 10
+			for i := 0; i < numWallets; i++ {
+				address, err := generateRandomAddress()
+				if err != nil {
+					log.Fatalf("failed to generate address: %v", err)
+				}
+
+				newWallet := models.Wallet{
+					Address: address,
+					Balance: 10000,
+				}
+
+				if err := db.Create(&newWallet).Error; err != nil {
+					log.Println("can't create a wallet: ", newWallet)
+				}
+
+				fmt.Println(newWallet.Address)
+			}
 		}
 
-		fmt.Println(newWallet.Address)
+		log.Printf("Table '%s' migrated successfully.", name)
 	}
 
-	log.Println("migrate the schemas finished")
+	log.Println("Migration process finished.")
 }
