@@ -1,17 +1,34 @@
 package send
 
-import "infotecs-transactions-api/internal/models"
+import (
+	"infotecs-transactions-api/internal/models"
+)
 
 type transactionService interface {
-	Send(transaction *models.Transaction) string
+	Send(transaction *models.Transaction) error
+}
+
+type walletService interface {
+	GetBalance(address string) (*int64, error)
+	SetBalance(address string, balance int64) error
+}
+
+type dbTransactionService interface {
+	Begin()
+	Rollback()
+	Commit() error
 }
 
 type UseCase struct {
-	transactionService transactionService
+	transactionService   transactionService
+	walletService        walletService
+	dbTransactionService dbTransactionService
 }
 
-func New(service transactionService) *UseCase {
+func New(transactionService transactionService, walletService walletService, dbTransactionService dbTransactionService) *UseCase {
 	return &UseCase{
-		transactionService: service,
+		transactionService:   transactionService,
+		walletService:        walletService,
+		dbTransactionService: dbTransactionService,
 	}
 }

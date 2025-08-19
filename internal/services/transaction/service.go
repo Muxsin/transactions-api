@@ -4,7 +4,7 @@ import "infotecs-transactions-api/internal/models"
 
 type transactionRepository interface {
 	GetLastByCount(count int) ([]models.Transaction, error)
-	Insert() string
+	Insert(transaction *models.Transaction) error
 }
 
 type service struct {

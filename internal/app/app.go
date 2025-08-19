@@ -8,6 +8,7 @@ import (
 	"infotecs-transactions-api/internal/handlers"
 	transaction_repository "infotecs-transactions-api/internal/repositories/transaction"
 	wallet_repository "infotecs-transactions-api/internal/repositories/wallet"
+	"infotecs-transactions-api/internal/services"
 	"infotecs-transactions-api/internal/services/transaction"
 	"infotecs-transactions-api/internal/services/wallet"
 	get_balance "infotecs-transactions-api/internal/usecases/get-balance"
@@ -51,13 +52,14 @@ func New() (*app, error) {
 
 	// region: creating services
 	walletService := wallet.New(walletRepository)
+	dbTransactionService := services.New(db)
 	transactionService := transaction.New(transactionRepository)
 	// endregion
 
 	// region: creating usecases
 	getBalanceUseCase := get_balance.New(walletService)
 	getLastUseCase := get_last.New(transactionService)
-	sendUseCase := send.New(transactionService)
+	sendUseCase := send.New(transactionService, walletService, dbTransactionService)
 	// endregion
 
 	// region: creating handlers
