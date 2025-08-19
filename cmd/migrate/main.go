@@ -23,9 +23,9 @@ func generateRandomAddress() (string, error) {
 }
 
 func truncateWallets(db *gorm.DB) error {
-	log.Println("Truncating wallets table...")
+	log.Println("Truncating wallets and transactions table...")
 
-	return db.Exec("TRUNCATE TABLE wallets RESTART IDENTITY CASCADE").Error
+	return db.Exec("TRUNCATE TABLE wallets RESTART IDENTITY CASCADE").Exec("TRUNCATE TABLE transactions RESTART IDENTITY CASCADE").Error
 }
 
 func main() {

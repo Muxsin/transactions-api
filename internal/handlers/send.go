@@ -26,6 +26,11 @@ func (h *handler) Send(c *gin.Context) {
 		return
 	}
 
+	if request.From == request.To {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "You cannot send money to yourself."})
+		return
+	}
+
 	amount, err := strconv.ParseFloat(request.Amount, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid amount format. Please provide a valid number."})
