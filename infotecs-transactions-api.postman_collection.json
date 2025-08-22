@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "b0fa86f7-5ac6-415b-8918-747d7d67df17",
 		"name": "infotecs-transactions-api",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "12593810"
 	},
 	"item": [
@@ -20,17 +20,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{host}}:{{port}}/api/send",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"send"
-					]
-				}
+				"url": "{{host}}:{{port}}/api/send"
 			},
 			"response": []
 		},
@@ -39,19 +29,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{host}}:{{port}}/api/wallet/{{address}}/balance",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"api",
-						"wallet",
-						"{{address}}",
-						"balance"
-					]
-				}
+				"url": "{{host}}:{{port}}/api/wallet/{{address}}/balance"
 			},
 			"response": []
 		},
